@@ -198,7 +198,7 @@ export default function Page() {
       setLoaded(true);
       checkAuthentication();
     }
-  }, [router]);
+  }, [router, startScenario]);
 
   // Handle message send
   const sendMessage = async (overrideContent) => {
@@ -453,7 +453,7 @@ export default function Page() {
                             Scenario Complete!
                           </h3>
                           <p className="text-sm mb-4">
-                            You've reached the end of this ethical dilemma.
+                            You&apos;ve reached the end of this ethical dilemma.
                           </p>
                           <p className="text-xs text-white/40 mb-4">
                             Review the final outcome in the scenario panel.

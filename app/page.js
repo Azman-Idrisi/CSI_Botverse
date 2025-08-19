@@ -5,7 +5,7 @@ import StarBorder from "@/components/StarBorder";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -108,4 +108,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
