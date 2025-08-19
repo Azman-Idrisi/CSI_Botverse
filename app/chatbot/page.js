@@ -198,7 +198,7 @@ export default function Page() {
       setLoaded(true);
       checkAuthentication();
     }
-  }, [router, startScenario]);
+  }, [router]);
 
   // Handle message send
   const sendMessage = async (overrideContent) => {
