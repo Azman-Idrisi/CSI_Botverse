@@ -66,6 +66,16 @@ function parseFourOptionsFromText(text, expectedCount = 4) {
   return [];
 }
 
+function getScenarioTextWithoutOptions(text) {
+  if (!text) return "";
+  // Remove the 'Options:' section and anything after it for non-final stages
+  const splitByOptions = text.split(/\n\s*Options:\s*/i);
+  if (splitByOptions.length > 1) {
+    return splitByOptions[0].trim();
+  }
+  return text.trim();
+}
+
 export default function Page() {
   const [loaded, setLoaded] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -268,6 +278,10 @@ export default function Page() {
     ? parseFourOptionsFromText(lastAssistant.content, expectedOptionsCount)
     : [];
 
+  const scenarioText = lastAssistant
+    ? getScenarioTextWithoutOptions(lastAssistant.content)
+    : "";
+
   // Check if the scenario has ended (contains "Final Outcome:")
   const scenarioEnded = lastAssistant?.content?.includes("Final Outcome:");
 
@@ -332,24 +346,24 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-screen p-6 relative overflow-hidden">
+    <div className="min-h-screen p-3 md:p-6 relative overflow-hidden">
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-        {/* Main glassmorphism container - increased width */}
-        <div className="w-full max-w-6xl backdrop-blur-xl bg-white/20 border border-white/30 rounded-3xl shadow-2xl p-6 flex flex-col h-[90vh] relative overflow-hidden">
+        {/* Main glassmorphism container - responsive width */}
+        <div className="w-full max-w-xs sm:max-w-lg md:max-w-4xl lg:max-w-6xl backdrop-blur-xl bg-white/20 border border-white/30 rounded-2xl md:rounded-3xl shadow-2xl p-3 md:p-6 flex flex-col min-h-[95vh] md:min-h-[90vh] relative overflow-y-auto md:overflow-hidden">
           {/* Subtle inner glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl md:rounded-3xl pointer-events-none"></div>
 
           <div className="relative z-10 flex flex-col h-full">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold text-center text-white drop-shadow-lg flex-1">
+            <div className="flex justify-between items-center mb-3 md:mb-6">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-center text-white drop-shadow-lg flex-1 px-2">
                 AI Ethical Dilemma Simulator
               </h1>
             </div>
 
             {/* Difficulty Info */}
             {authenticated && difficulty && (
-              <div className="mb-4 p-3 backdrop-blur-md bg-white/10 border border-white/20 rounded-xl text-center">
-                <p className="text-white/80 text-sm">
+              <div className="mb-3 md:mb-4 p-2 md:p-3 backdrop-blur-md bg-white/10 border border-white/20 rounded-xl text-center">
+                <p className="text-white/80 text-xs sm:text-sm">
                   <span
                     className={`font-semibold ${
                       getDifficultyColor(difficulty).split(" ")[0]
@@ -374,132 +388,150 @@ export default function Page() {
               </div>
             )}
 
-            {/* Main content area - split layout */}
+            {/* Main content area - separate boxes layout */}
             {authenticated && difficulty && (
-              <div className="flex-1 flex gap-6 min-h-0">
-                {/* Left side - Chat area */}
-                <div className="flex-1 flex flex-col min-w-0">
-                  <h2 className="text-xl font-semibold text-white mb-3">
-                    Scenario
-                  </h2>
-                  <div className="flex-1 overflow-y-auto backdrop-blur-md bg-black/10 border border-white/20 p-4 rounded-2xl shadow-inner">
-                    {messages.map((msg, i) => (
-                      <div
-                        key={i}
-                        className={`mb-3 p-4 rounded-2xl backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-[1.01] ${
-                          msg.role === "user"
-                            ? "bg-blue-500/30 border border-blue-300/30 text-white ml-auto max-w-[80%] shadow-blue-500/20"
-                            : "bg-white/20 border border-white/30 text-white shadow-white/10"
-                        }`}
-                      >
-                        <div className="font-medium text-sm md:text-base leading-relaxed whitespace-pre-wrap">
-                          {msg.content}
-                        </div>
-                      </div>
-                    ))}
-                    {isLoading && (
-                      <div className="backdrop-blur-md bg-white/20 border border-white/30 rounded-2xl p-4 shadow-lg">
-                        <div className="flex items-center space-x-2 text-white/80">
-                          <div className="flex space-x-1">
-                            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
-                            <div
-                              className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
-                              style={{ animationDelay: "0.1s" }}
-                            ></div>
-                            <div
-                              className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
-                              style={{ animationDelay: "0.2s" }}
-                            ></div>
+              <div className="flex-1 flex flex-col gap-4 md:gap-6 lg:flex-row min-h-0">
+                {/* Scenario Box - Clearly separated container */}
+                <div className="w-full lg:flex-1 order-1">
+                  <div className="backdrop-blur-xl bg-white/15 border-2 border-white/30 rounded-2xl shadow-2xl p-4 md:p-6 min-h-[250px] md:min-h-[300px] lg:min-h-0 lg:h-full">
+                    <div className="flex items-center justify-center mb-4">
+                      <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
+                        📖 Scenario
+                      </h2>
+                    </div>
+                    <div className="flex-1 overflow-y-auto backdrop-blur-md bg-black/10 border border-white/20 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-inner">
+                      {scenarioText ? (
+                        <div className="bg-white/20 border border-white/30 text-white rounded-xl p-3 md:p-4 shadow-white/10">
+                          <div className="font-medium text-xs sm:text-sm md:text-base leading-relaxed whitespace-pre-wrap">
+                            {scenarioText}
                           </div>
-                          <span className="font-medium">
-                            Model is thinking...
-                          </span>
                         </div>
-                      </div>
-                    )}
+                      ) : null}
+
+                      {isLoading && (
+                        <div className="mt-2 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl md:rounded-2xl p-3 md:p-4 shadow-lg">
+                          <div className="flex items-center space-x-2 text-white/80">
+                            <div className="flex space-x-1">
+                              <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
+                              <div
+                                className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
+                                style={{ animationDelay: "0.1s" }}
+                              ></div>
+                              <div
+                                className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
+                                style={{ animationDelay: "0.2s" }}
+                              ></div>
+                            </div>
+                            <span className="font-medium text-xs sm:text-sm">
+                              Model is thinking...
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {!scenarioText && messages.length === 0 && !isLoading && (
+                        <div className="flex items-center justify-center h-full text-white/60 text-center">
+                          <div>
+                            <div className="text-3xl md:text-4xl mb-2">📝</div>
+                            <p className="text-xs sm:text-sm">
+                              Your ethical dilemma will appear here...
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Right side - Choices area */}
-                <div className="w-96 flex flex-col min-h-0">
-                  <h2 className="text-xl font-semibold text-white mb-3">
-                    Your Choices
-                  </h2>
-                  <div className="flex-1 backdrop-blur-md bg-black/10 border border-white/20 p-4 rounded-2xl shadow-inner overflow-y-auto">
-                    {optionTexts.length === expectedOptionsCount ? (
-                      <div className="space-y-3">
-                        <p className="text-white/80 text-sm mb-4">
-                          Choose your response ({expectedOptionsCount} options
-                          available):
-                        </p>
-                        {optionTexts.map((opt, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleOptionClick(idx)}
-                            className="w-full backdrop-blur-md bg-white/20 hover:bg-white/30 text-white p-4 rounded-xl border border-white/30 text-left transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
-                          >
-                            <div className="font-semibold text-blue-200 mb-2 text-sm">
-                              Option {idx + 1}
+                {/* Choices Box - Clearly separated container */}
+                <div className="w-full lg:w-80 xl:w-96 order-2">
+                  <div className="backdrop-blur-xl bg-white/15 border-2 border-white/30 rounded-2xl shadow-2xl p-4 md:p-6 min-h-[250px] md:min-h-[300px] lg:min-h-0 lg:h-full">
+                    <div className="flex items-center justify-center mb-4">
+                      <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-green-300 to-blue-300 bg-clip-text text-transparent">
+                        🎯 Your Choices
+                      </h2>
+                    </div>
+                    <div className="flex-1 backdrop-blur-md bg-black/10 border border-white/20 p-2 md:p-4 rounded-xl md:rounded-2xl shadow-inner overflow-y-auto">
+                      {optionTexts.length === expectedOptionsCount ? (
+                        <div className="space-y-2 md:space-y-3">
+                          <p className="text-white/80 text-xs sm:text-sm mb-3 md:mb-4 text-center">
+                            Choose your response ({expectedOptionsCount} options
+                            available):
+                          </p>
+                          {optionTexts.map((opt, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => handleOptionClick(idx)}
+                              className="w-full backdrop-blur-md bg-white/20 hover:bg-white/30 text-white p-3 md:p-4 rounded-lg md:rounded-xl border border-white/30 text-left transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
+                            >
+                              <div className="font-semibold text-blue-200 mb-1 md:mb-2 text-xs sm:text-sm">
+                                Option {idx + 1}
+                              </div>
+                              <div className="text-xs sm:text-sm leading-relaxed">
+                                {opt}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      ) : scenarioEnded ? (
+                        <div className="flex items-center justify-center h-full text-white/60 text-center">
+                          <div>
+                            <div className="text-3xl md:text-4xl mb-3 md:mb-4">
+                              🎉
                             </div>
-                            <div className="text-sm leading-relaxed">{opt}</div>
-                          </button>
-                        ))}
-                      </div>
-                    ) : scenarioEnded ? (
-                      <div className="flex items-center justify-center h-full text-white/60 text-center">
-                        <div>
-                          <div className="text-4xl mb-4">🎉</div>
-                          <h3 className="text-lg font-semibold text-white mb-2">
-                            Scenario Complete!
-                          </h3>
-                          <p className="text-sm mb-4">
-                            You&apos;ve reached the end of this ethical dilemma.
-                          </p>
-                          <p className="text-xs text-white/40 mb-4">
-                            Review the final outcome in the scenario panel.
-                          </p>
-                          <button
-                            onClick={() => {
-                              setScenarioStarted(false);
-                              startScenario(difficulty);
-                            }}
-                            disabled={isLoading}
-                            className="px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-300 backdrop-blur-md border bg-green-500/30 hover:bg-green-500/40 text-white border-green-300/30 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            🎲 Start New Scenario
-                          </button>
+                            <h3 className="text-base md:text-lg font-semibold text-white mb-2">
+                              Scenario Complete!
+                            </h3>
+                            <p className="text-xs sm:text-sm mb-3 md:mb-4">
+                              You&apos;ve reached the end of this ethical
+                              dilemma.
+                            </p>
+                            <p className="text-xs text-white/40 mb-3 md:mb-4">
+                              Review the final outcome in the scenario panel.
+                            </p>
+                            <button
+                              onClick={() => {
+                                setScenarioStarted(false);
+                                startScenario(difficulty);
+                              }}
+                              disabled={isLoading}
+                              className="px-3 md:px-4 py-2 rounded-lg md:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 backdrop-blur-md border bg-green-500/30 hover:bg-green-500/40 text-white border-green-300/30 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              🎲 Start New Scenario
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center h-full text-white/60 text-center">
-                        <div>
-                          <div className="text-4xl mb-2">🤔</div>
-                          <p className="text-sm">
-                            Waiting for scenario options...
-                          </p>
-                          <p className="text-xs mt-2 text-white/40">
-                            Expecting {expectedOptionsCount} options in{" "}
-                            {difficulty} mode
-                          </p>
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-white/60 text-center">
+                          <div>
+                            <div className="text-3xl md:text-4xl mb-2">🤔</div>
+                            <p className="text-xs sm:text-sm">
+                              Waiting for scenario options...
+                            </p>
+                            <p className="text-xs mt-2 text-white/40">
+                              Expecting {expectedOptionsCount} options in{" "}
+                              {difficulty} mode
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Controls */}
+            {/* Controls - responsive layout */}
             {authenticated && difficulty && (
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4 pt-4 border-t border-white/20">
-                <div className="flex gap-3">
+              <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:justify-between md:items-center gap-2 md:gap-4 mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/20">
+                <div className="flex gap-2 md:gap-3">
                   <button
                     onClick={() => {
                       setScenarioStarted(false);
                       startScenario(difficulty);
                     }}
                     disabled={!authenticated || isLoading}
-                    className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 backdrop-blur-md border ${
+                    className={`px-4 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl font-semibold text-sm md:text-base transition-all duration-300 backdrop-blur-md border ${
                       authenticated && !isLoading
                         ? "bg-green-500/30 hover:bg-green-500/40 text-white border-green-300/30 hover:scale-105 hover:shadow-lg"
                         : "bg-gray-500/20 text-white/40 cursor-not-allowed border-gray-300/20"
@@ -509,8 +541,8 @@ export default function Page() {
                   </button>
                 </div>
 
-                {/* Input section with glassmorphism */}
-                <div className="flex space-x-2 flex-1 max-w-md w-full sm:w-auto">
+                {/* Input section with responsive design */}
+                <div className="flex space-x-2 flex-1 max-w-full md:max-w-md w-full">
                   <input
                     type="text"
                     value={input}
@@ -518,7 +550,7 @@ export default function Page() {
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     placeholder="Type custom message (optional)..."
                     disabled={!authenticated}
-                    className={`flex-1 backdrop-blur-md bg-white/20 border border-white/30 rounded-2xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all duration-300 ${
+                    className={`flex-1 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl md:rounded-2xl px-3 md:px-4 py-2 md:py-3 text-sm md:text-base text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all duration-300 ${
                       !authenticated
                         ? "opacity-50 cursor-not-allowed"
                         : "hover:bg-white/25"
@@ -527,7 +559,7 @@ export default function Page() {
                   <button
                     onClick={() => sendMessage()}
                     disabled={!authenticated || !input.trim()}
-                    className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 backdrop-blur-md border ${
+                    className={`px-4 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105 backdrop-blur-md border ${
                       authenticated && input.trim()
                         ? "bg-blue-500/30 hover:bg-blue-500/40 text-white border-blue-300/30 hover:shadow-lg hover:shadow-blue-500/25"
                         : "bg-gray-500/20 text-white/40 cursor-not-allowed border-gray-300/20"
