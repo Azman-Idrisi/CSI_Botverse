@@ -2,6 +2,9 @@
 
 Botverse is a Next.js application that generates interactive, multi‑stage ethical dilemmas. Users choose a difficulty level (Easy, Medium, Hard) and progress through realistic scenarios with branching consequences. The app integrates with Puter.ai for chat generation and features a polished, responsive UI built with Tailwind CSS 4.
 
+## Problem Statement - 
+AI ETHICAL DILEMME SIMULATOR : Create an AI agent based on the assigned concept and present its business model/idea to our esteemed panel of judges.
+
 ## Features
 
 - Multi‑stage ethical dilemma simulator powered by Puter AI
