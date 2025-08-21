@@ -5,10 +5,17 @@ import { useRouter } from "next/navigation";
 import {
   Brain,
   Lightbulb,
+  TrendingUp,
+  Users,
+  Target,
+  Zap,
   Search,
+  BookOpen,
+  Settings,
   Menu,
   X,
   ArrowRight,
+  Star,
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
@@ -470,7 +477,40 @@ export default function UniversalAISimulator() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white overflow-hidden">
+      <style jsx global>{`
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        ::-webkit-scrollbar {
+          display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        html {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+
+        body {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+
+        /* Ensure scrolling still works */
+        html,
+        body {
+          overflow-y: auto;
+        }
+
+        /* Utility class for hiding scrollbars */
+        .scrollbar-hide {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       {/* Header */}
       <header className="border-b border-white/10 bg-black/20 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -536,7 +576,7 @@ export default function UniversalAISimulator() {
         </div>
       )}
 
-      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto scrollbar-hide">
         {!analysis ? (
           <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8">
             <div className="text-center space-y-6">
@@ -545,8 +585,8 @@ export default function UniversalAISimulator() {
               </h1>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                 Get intelligent analysis and strategic recommendations for any
-                dilemma, question, problem, or decision. From business strategy
-                to personal choices
+                question, problem, or decision. From business strategy to
+                personal choices - AI-powered insights for everything.
               </p>
               {!authenticated && (
                 <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4 max-w-2xl mx-auto">
@@ -573,8 +613,7 @@ export default function UniversalAISimulator() {
                   }
                   placeholder="Describe your dilemma, problem, or decision that needs analysis..."
                   rows={4}
-                  className="w-full pl-14 pr-4 py-6 text-lg rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-400/20 transition-all placeholder-gray-400 resize-none overflow-hidden scrollbar-hide"
-                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                  className="w-full pl-14 pr-4 py-6 text-lg rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-400/20 transition-all placeholder-gray-400 resize-none scrollbar-hide"
                 />
                 <button
                   onClick={() => handleAnalyze(query)}
@@ -587,14 +626,13 @@ export default function UniversalAISimulator() {
               </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="w-full max-w-4xl flex justify-center items-center">
               <StarBorder
-                as="button"
-                className="px-6 py-3 text-white font-semibold hover:scale-105 transition-transform cursor-pointer"
-                color="#cyan"
+                className="custom-class"
+                color="cyan"
                 speed="2s"
-                thickness={2}
                 onClick={() => router.push("/")}
+                disabled={isAnalyzing || !authenticated}
                 cursor="pointer"
               >
                 Homepage
