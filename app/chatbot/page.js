@@ -468,6 +468,16 @@ export default function Page() {
                           >
                             🎲 Start New Scenario
                           </button>
+                          <button
+                            onClick={() => {
+                              setScenarioStarted(false);
+                              startScenario(difficulty);
+                            }}
+                            disabled={isLoading}
+                            className="px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-300 backdrop-blur-md border bg-green-500/30 hover:bg-green-500/40 text-white border-green-300/30 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            HomePage
+                          </button>
                         </div>
                       </div>
                     ) : (

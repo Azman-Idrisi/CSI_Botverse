@@ -68,6 +68,27 @@ const page = () => {
     }
   };
 
+  const handleownBot = async () => {
+    if (!loaded) return;
+
+    if (authenticated) {
+      // User is already signed in, redirect to chatbot
+      router.push("/ownchat");
+    } else {
+      // User needs to sign in first
+      try {
+        await window.puter.auth.signIn();
+        // After successful sign in, redirect to chatbot
+        router.push("/chatbot");
+      } catch (err) {
+        console.error("Sign in failed:", err);
+        // Handle sign in error if needed
+      }
+    }
+  };
+
+
+
   return (
     <div className="flex items-center justify-center overflow-x-hidden overflow-y-hidden">
       <div className="relative w-[100vw] h-[100vh]">
@@ -95,6 +116,24 @@ const page = () => {
                 : authenticated
                 ? "Continue to Simulator"
                 : "Sign In to Get Started"}
+            </StarBorder>
+            <StarBorder
+              as="button"
+              className={`custom-class ${
+                checking || !loaded
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer"
+              }`}
+              color="cyan"
+              speed="2s"
+              onClick={handleownBot}
+              disabled={checking || !loaded}
+            >
+              {checking
+                ? "Loading..."
+                : authenticated
+                ? "Continue to give your own Dilemma"
+                : "Continue to give your own Dilemma"}
             </StarBorder>
           </div>
           {authenticated && !checking && (
