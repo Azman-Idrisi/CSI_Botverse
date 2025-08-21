@@ -76,16 +76,6 @@ function getScenarioTextWithoutOptions(text) {
   return text.trim();
 }
 
-function getScenarioTextWithoutOptions(text) {
-  if (!text) return "";
-  // Remove the 'Options:' section and anything after it for non-final stages
-  const splitByOptions = text.split(/\n\s*Options:\s*/i);
-  if (splitByOptions.length > 1) {
-    return splitByOptions[0].trim();
-  }
-  return text.trim();
-}
-
 export default function Page() {
   const [loaded, setLoaded] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
