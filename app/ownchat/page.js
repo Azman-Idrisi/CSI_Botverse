@@ -520,7 +520,7 @@ export default function UniversalAISimulator() {
                 <Brain className="h-8 w-8 text-blue-400" />
                 <div>
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    AI Dilemma Analyzer Simulator
+                    AI Dilemma Simulator
                   </span>
                 </div>
               </div>
