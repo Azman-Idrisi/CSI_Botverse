@@ -1,28 +1,51 @@
-# Botverse — AI Ethical Dilemma Simulator
+# Botverse — AI Ethical Dilemma Simulator & Universal Analyzer
 
-Botverse is a Next.js application that generates interactive, multi‑stage ethical dilemmas. Users choose a difficulty level (Easy, Medium, Hard) and progress through realistic scenarios with branching consequences. The app integrates with Puter.ai for chat generation and features a polished, responsive UI built with Tailwind CSS 4.
+Botverse is a comprehensive Next.js application featuring two main AI-powered tools: an interactive multi‑stage ethical dilemma simulator and a universal AI dilemma analyzer. Users can choose difficulty levels for structured scenarios or submit custom problems for strategic analysis. The app integrates with Puter.ai for chat generation and features a polished, responsive UI with advanced animations and glassmorphism effects.
 
-## Problem Statement - 
+## Problem Statement -
+
 AI ETHICAL DILEMME SIMULATOR : Create an AI agent based on the assigned concept and present its business model/idea to our esteemed panel of judges.
 
 ## Features
 
-- Multi‑stage ethical dilemma simulator powered by Puter AI
-- Difficulty modes that control the number of options per step
-  - Easy: 4 options
-  - Medium: 3 options
-  - Hard: 2 options
-- Scenario box and Choices box as separate responsive panels on mobile and desktop
-- Session persistence for selected difficulty
-- Glassmorphism UI with smooth micro‑interactions
-- Next.js App Router and React 19
+### Core Simulators
+
+- **Multi‑stage Ethical Dilemma Simulator** (`/chatbot`) - Guided ethical scenarios with branching consequences
+  - Difficulty modes that control the number of options per step
+    - Easy: 4 options
+    - Medium: 3 options
+    - Hard: 2 options
+  - Scenario and Choices panels with responsive design
+  - Session persistence for selected difficulty
+- **Universal AI Dilemma Analyzer** (`/ownchat`) - Custom problem analysis tool
+  - Strategic analysis for any question, problem, or decision
+  - Comprehensive stakeholder identification
+  - Multi-perspective evaluation with scored recommendations
+  - Structured response format with advantages/considerations
+  - Success metrics and next steps guidance
+
+### UI/UX Features
+
+- **Advanced Animations**
+  - Custom text generation effects with staggered word animations
+  - WebGL-powered background with CPPN (Compositional Pattern Producing Networks)
+  - Animated star borders with customizable colors and speeds
+- **Responsive Design**
+  - Mobile‑first layout with adaptive panels
+  - Glassmorphism UI with smooth micro‑interactions
+  - Touch-optimized buttons and inputs
+- **Authentication Integration**
+  - Puter.ai SDK integration with dynamic loading
+  - Persistent authentication state
+  - Seamless sign-in flow
 
 ## Tech Stack
 
-- Next.js 15 (App Router)
-- React 19
-- Tailwind CSS 4
-- Puter.ai JS SDK (`https://js.puter.com/v2/`)
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS 4
+- **Animations**: Framer Motion (motion/react), OGL (WebGL)
+- **AI Integration**: Puter.ai JS SDK (`https://js.puter.com/v2/`)
+- **Icons**: Lucide React
+- **Styling**: Tailwind CSS 4, Custom CSS animations
 
 ## Getting Started
 
@@ -58,34 +81,55 @@ Open `http://localhost:3000` to view the app.
 ```
 botverse/
   app/
-    chatbot/            # Chat experience (Scenario + Choices)
+    chatbot/            # Ethical dilemma simulator (Scenario + Choices)
     difficulty/         # Difficulty selection page
+    ownchat/           # Universal AI dilemma analyzer
     layout.js           # App layout
-    page.js             # Landing page
-  components/           # Reusable UI components
-  css/                  # Global CSS utilities
-  lib/                  # Utilities
+    page.js             # Landing page with navigation
+  components/
+    ui/
+      text-generate-effect.jsx  # Text animation component
+    DarkVeil.js         # WebGL background effect
+    StarBorder.js       # Animated border component
+  css/
+    StarBorder.css      # Star border animations
+  lib/                  # Utilities (cn helper, etc.)
   public/               # Static assets
   tailwind.config.js    # Tailwind configuration
 ```
 
-## Key Files
+## Key Files & Components
 
-- `app/chatbot/page.js`: Main simulator logic and UI
-  - Loads Puter SDK dynamically and checks authentication
-  - Builds the system prompt based on difficulty
-  - Renders two panels:
-    - Scenario panel: shows narrative text (options stripped)
-    - Choices panel: shows exactly N options based on difficulty
-- `app/difficulty/page.js`: Difficulty selection and persistence in `sessionStorage`
+### Core Pages
+
+- **`app/page.js`**: Landing page with animated text effects and dual navigation
+  - WebGL background with CPPN shaders
+  - Text generation effects with motion blur
+  - Dual-path navigation to simulator or analyzer
+- **`app/chatbot/page.js`**: Structured ethical dilemma simulator
+  - Dynamic system prompts based on difficulty
+  - Two-panel layout (Scenario + Choices)
+  - Progress tracking through multiple stages
+- **`app/ownchat/page.js`**: Universal AI dilemma analyzer
+  - Open-ended problem submission
+  - Structured analysis with stakeholder identification
+  - Strategic options with scoring and recommendations
+- **`app/difficulty/page.js`**: Difficulty selection with session persistence
+
+### UI Components
+
+- **`components/DarkVeil.js`**: WebGL shader background using OGL library
+- **`components/StarBorder.js`**: Animated button borders with customizable colors
+- **`components/ui/text-generate-effect.jsx`**: Staggered text animations with blur effects
 
 ## Environment & Authentication
 
-The app uses the Puter.ai SDK loaded at runtime. Users must be signed in to Puter for the simulator to work.
+The app uses the Puter.ai SDK loaded at runtime. Users must be signed in to Puter for AI features to work.
 
-- SDK: `https://js.puter.com/v2/`
-- The app checks `window.puter.auth.isSignedIn()` on load
-- Unauthenticated users are redirected to `/`
+- **SDK**: `https://js.puter.com/v2/`
+- **Auth Check**: `window.puter.auth.isSignedIn()` on load
+- **Model**: Uses `gpt-4o-mini` for AI responses
+- **Unauthenticated**: Users are prompted to sign in via Puter SDK
 
 No local env variables are required for development. If your Puter integration requires credentials or project configuration, follow your Puter workspace setup and ensure you can sign in via the Puter SDK in the browser.
 
@@ -100,16 +144,25 @@ No local env variables are required for development. If your Puter integration r
 }
 ```
 
-## Styling
+## Styling & Animations
 
-- Tailwind CSS 4 is configured in `tailwind.config.js` with content paths including `app/**`, `components/**`, and `pages/**`.
-- The design uses glassmorphism with layered blurs and gradients.
+- **Tailwind CSS 4** configured with content paths including `app/**`, `components/**`
+- **Glassmorphism design** with layered blurs and gradients
+- **Custom animations**:
+  - WebGL background effects using fragment shaders
+  - Text generation with staggered word reveals
+  - Animated star borders with CSS keyframes
+  - Motion blur effects with Framer Motion
+- **Responsive breakpoints** optimized for mobile-first design
 
 ## Accessibility & Responsiveness
 
-- Mobile‑first layout
-- Scenario and Choices are rendered in distinct, vertically stacked boxes on small screens and side‑by‑side on large screens
-- Buttons and inputs sized for touch interaction
+- **Mobile‑first layout** with adaptive stacking
+- **Touch-optimized interactions** with proper sizing
+- **Keyboard navigation** support for form elements
+- **Loading states** with progress indicators
+- **Error handling** with fallback content
+- **Authentication prompts** for protected features
 
 ## Deployment
 
@@ -127,12 +180,31 @@ npm run build
 npm start
 ```
 
+## Usage Guide
+
+### Ethical Dilemma Simulator
+
+1. Navigate to landing page and click "Sign In to Get Started"
+2. Select difficulty level (Easy/Medium/Hard)
+3. Progress through multi-stage scenarios
+4. Make choices and see consequences unfold
+5. Reach final outcomes based on decisions
+
+### Universal Dilemma Analyzer
+
+1. Click "Continue to give your own Dilemma" from landing page
+2. Enter any question, problem, or decision in the text area
+3. Click "Analyze with AI" to get comprehensive analysis
+4. Review stakeholder identification and strategic options
+5. Use scoring and recommendations to guide decisions
+
 ## Contributing
 
 1. Create a feature branch
 2. Make your changes with clear, readable code
 3. Run `npm run lint` and ensure no errors
-4. Open a PR with a concise description and screenshots if UI changes
+4. Test animations and WebGL compatibility across devices
+5. Open a PR with a concise description and screenshots if UI changes
 
 ## License
 
